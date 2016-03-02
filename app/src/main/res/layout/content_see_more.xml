@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginBottom="30dp"
+    android:layout_alignBottom="@+id/recycler_repository">
+
+    <ImageView
+        android:id="@+id/see_more_spinner"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center|bottom"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:background="@android:drawable/stat_notify_sync_noanim"
+        android:contentDescription="@string/main_see_more_spinner_description"/>
+
+    <TextView
+        android:id="@+id/see_more_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/main_see_more_text_default"
+        android:textColor="#b3adb1"
+        android:textSize="18sp" />
+</LinearLayout>

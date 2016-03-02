@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Github Pocket</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="main_see_more_text_default">Buscar mais?</string>
+    <string name="main_see_more_text_start">Buscando&#8230;</string>
+    <string name="main_see_more_text_end">Encontrado!</string>
+    <string name="main_see_more_text_fail">Nada foi encontrado!</string>
+    <string name="main_see_more_spinner_description">Spinner para carregar mais dados.</string>
+
+    <string name="main_menu_item_1">Atualizar</string>
+    <string name="pullrequest_menu_item_1">Atualizar</string>
+
+    <string name="progress_dialog_title">Espere um momento&#8230;</string>
+    <string name="progress_dialog_subtitle_subtitle">Buscando informações&#8230;</string>
+    <string name="toast_title">Dispositivo sem conexão com a internet!</string>
+</resources>
