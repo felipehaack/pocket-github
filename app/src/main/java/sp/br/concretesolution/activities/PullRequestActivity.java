@@ -1,7 +1,10 @@
 package sp.br.concretesolution.activities;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +42,8 @@ public class PullRequestActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
+    private TextView actionBarTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -46,15 +51,20 @@ public class PullRequestActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_pull_request);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         /* get Repository name and owner from Bundle of things */
         Bundle extra = getIntent().getExtras();
         repositoryName = extra.getString("repositoryName");
         repositoryOwner = extra.getString("repositoryOwner");
 
+        actionBarTitle = (TextView) findViewById(R.id.activity_pull_request_title);
+        actionBarTitle.setText(WordUtils.capitalize(repositoryName.replaceAll("[^a-zA-Z0-9]+", " ").toLowerCase()));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Adjust things
         adjust();
+        animateChangeActionBarTitleColor(Color.parseColor("#3977b0"), Color.parseColor("#FFFFFF"), 500, 1500);
 
         /* Create Adapter for RecyclerView and LinearLayoutManager basic elements */
         recyclerViewAdapter = new RecyclerPullRequestAdapter(this, new ArrayList<PullRequest>());
@@ -135,19 +145,35 @@ public class PullRequestActivity extends AppCompatActivity {
         gitHubAPI.getPullRequests(repositoryOwner, repositoryName);
     }
 
-    private void adjust() {
+    private void animateChangeActionBarTitleColor(int colorStart, int colorEnd, int delay, int duration){
 
-        /* adjust Title activity to max 10 caracters with ellipse */
-        String titleIntent = repositoryName.replaceAll("[^a-zA-Z0-9]+", " ");
-        titleIntent = titleIntent.length() > 15 ? titleIntent.substring(0, 15) + "..." : titleIntent.substring(0, titleIntent.length());
-        setTitle(WordUtils.capitalize(titleIntent.toLowerCase()));
+        ArgbEvaluator evaluator = new ArgbEvaluator();
+        ValueAnimator animator = new ValueAnimator();
+
+        animator.setIntValues(colorStart, colorEnd);
+        animator.setStartDelay(delay);
+        animator.setDuration(duration);
+        animator.setEvaluator(evaluator);
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                actionBarTitle.setTextColor((Integer) animation.getAnimatedValue());
+            }
+        });
+
+        animator.start();
+    }
+
+    private void adjust() {
 
         try {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (NullPointerException e) {
 
-            System.out.println(e.getStackTrace());
+            e.printStackTrace();
         }
     }
 
@@ -169,7 +195,9 @@ public class PullRequestActivity extends AppCompatActivity {
 
             case android.R.id.home: {
 
-                finish();
+                actionBarTitle.setTextColor(Color.parseColor("#3977b0"));
+
+                supportFinishAfterTransition();
             }
 
             case R.id.pull_request_menu_refresh: {
@@ -180,6 +208,16 @@ public class PullRequestActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
+
+        actionBarTitle.setTextColor(Color.parseColor("#3977b0"));
+
+        supportFinishAfterTransition();
     }
 
     @Override

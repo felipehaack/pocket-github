@@ -10,7 +10,15 @@
     tools:showIn="@layout/activity_main"
     tools:context=".MainActivity">
 
-    <include layout="@layout/content_see_more"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_languages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:background="#FFF"
+        android:elevation="0dp"/>
+
+    <include layout="@layout/content_see_more" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_repository"
@@ -18,5 +26,6 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:background="#FFF"
-        android:elevation="6dp"/>
+        android:elevation="12dp"
+        android:translationX="100dp"/>
 </RelativeLayout>

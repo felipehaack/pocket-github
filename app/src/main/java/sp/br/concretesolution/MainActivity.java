@@ -2,14 +2,15 @@ package sp.br.concretesolution;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import sp.br.concretesolution.adapters.RecyclerLanguageAdapter;
 import sp.br.concretesolution.apis.GitHubAPI;
 import sp.br.concretesolution.activities.PullRequestActivity;
 import sp.br.concretesolution.adapters.RecyclerRepositoryAdapter;
@@ -32,10 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
     public int currentPage = 1;
 
+    public String currentLanguage = "";
+    public String currentSort = "";
+    public String[] languages;
+
     private Menu menu;
     private GitHubAPI gitHubAPI;
     private ActivityListener activityListener;
-    private RecyclerRepositoryAdapter recyclerViewAdapter;
+    private RecyclerRepositoryAdapter recyclerRepositoryAdapter;
+    private RecyclerLanguageAdapter recyclerLanguageAdapter;
 
     private ProgressDialog progressDialog;
 
@@ -50,23 +57,33 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /* Create Adapter for RecyclerView and LinearLayoutManager basic elements */
-        recyclerViewAdapter = new RecyclerRepositoryAdapter(new Repository(), this.getApplicationContext());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        /* Initialize array with languages and values */
+        languages = getResources().getStringArray(R.array.languages_array);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_repository);
+        /* Create Adapter for RecyclerView and LinearLayoutManager basic elements */
+        recyclerRepositoryAdapter = new RecyclerRepositoryAdapter(new Repository(), this.getApplicationContext());
+        recyclerLanguageAdapter = new RecyclerLanguageAdapter(languages);
+
+        LinearLayoutManager layoutManagerRepository = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManagerLanguage = new LinearLayoutManager(this);
+
+        final RecyclerView recyclerViewRepository = (RecyclerView) findViewById(R.id.recycler_repository);
+        final RecyclerView recyclerViewLanguages = (RecyclerView) findViewById(R.id.recycler_languages);
 
         /* Set layout manager, adapter and others things to work */
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerViewRepository.setLayoutManager(layoutManagerRepository);
+        recyclerViewRepository.setAdapter(recyclerRepositoryAdapter);
+
+        recyclerViewLanguages.setLayoutManager(layoutManagerLanguage);
+        recyclerViewLanguages.setAdapter(recyclerLanguageAdapter);
 
         /* Create a listener for activity to detect swipe down and search for more github repositories */
-        activityListener = new ActivityListener(recyclerView, (ImageView) findViewById(R.id.see_more_spinner), (TextView) findViewById(R.id.see_more_text)) {
+        activityListener = new ActivityListener(recyclerViewRepository, recyclerViewLanguages, (ImageView) findViewById(R.id.see_more_spinner), (TextView) findViewById(R.id.see_more_text)) {
 
             @Override
             public void infiniteScrollDetected() {
 
-                gitHubAPI.getRepositories(currentPage);
+                gitHubAPI.getRepositories(currentLanguage, currentPage);
             }
         };
 
@@ -85,16 +102,14 @@ public class MainActivity extends AppCompatActivity {
                     if (progressDialog != null) {
 
                         progressDialog.dismiss();
-                        progressDialog = null;
-                        menu.getItem(0).setVisible(false);
                     }
 
-                    Repository currentRepository = recyclerViewAdapter.getRepository();
+                    Repository currentRepository = recyclerRepositoryAdapter.getRepository();
                     currentRepository.getRepositoryItems().addAll(result.getRepositoryItems());
 
-                    recyclerViewAdapter.setRepository(currentRepository);
-                    recyclerViewAdapter.setCountItems(currentRepository.getRepositoryItems().size());
-                    recyclerViewAdapter.notifyDataSetChanged();
+                    recyclerRepositoryAdapter.setRepository(currentRepository);
+                    recyclerRepositoryAdapter.setCountItems(currentRepository.getRepositoryItems().size());
+                    recyclerRepositoryAdapter.notifyDataSetChanged();
 
                     activityListener.clearSpinnerAnimation();
 
@@ -112,25 +127,64 @@ public class MainActivity extends AppCompatActivity {
         };
         gitHubAPI.startAPI();
 
-        /* Add ScrollListener and TouchItem */
-        recyclerView.addOnScrollListener(new RecyclerScrollListener(activityListener));
+        /* Add ScrollListener and TouchItem to recycleViewRepository */
+        recyclerViewRepository.addOnScrollListener(new RecyclerScrollListener(activityListener));
 
-        recyclerView.addOnItemTouchListener(new RecyclerClickListener(this, new RecyclerClickListener.OnItemClickListener() {
+        recyclerViewRepository.addOnItemTouchListener(new RecyclerClickListener(this, new RecyclerClickListener.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(final View view, final int position) {
 
-                List<RepositoryItem> repositoryItems = recyclerViewAdapter.getRepository().getRepositoryItems();
+                recyclerViewRepository.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-                Intent intent = new Intent(MainActivity.this, PullRequestActivity.class);
+                        List<RepositoryItem> repositoryItems = recyclerRepositoryAdapter.getRepository().getRepositoryItems();
 
-                intent.putExtra("repositoryName", repositoryItems.get(position).getName());
-                intent.putExtra("repositoryOwner", repositoryItems.get(position).getOwner().getLogin());
+                        Intent intent = new Intent(MainActivity.this, PullRequestActivity.class);
 
-                startActivity(intent);
+                        intent.putExtra("repositoryName", repositoryItems.get(position).getName());
+                        intent.putExtra("repositoryOwner", repositoryItems.get(position).getOwner().getLogin());
+
+                        View viewTitle = view.findViewById(R.id.repository_name);
+
+                        if (Build.VERSION.SDK_INT >= 21) {
+
+                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, viewTitle, "moveTitle");
+                            startActivity(intent, options.toBundle());
+                        } else {
+
+                            startActivity(intent);
+                        }
+                    }
+                }, 150);
             }
         }));
 
-        executeProgressDialog();
+        /* Add TouchItem to recycleViewLanguage */
+        recyclerViewLanguages.addOnItemTouchListener(new RecyclerClickListener(this, new RecyclerClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, final int position) {
+
+                recyclerViewLanguages.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (!languages[position].equals(currentLanguage)) {
+
+                            recyclerRepositoryAdapter.clearRepository();
+
+                            currentLanguage = languages[position];
+
+                            executeProgressDialog();
+                        } else {
+
+                            if (recyclerRepositoryAdapter.getRepository().getRepositoryItems().size() == 0)
+                                executeProgressDialog();
+                        }
+                    }
+                }, 150);
+            }
+        }));
     }
 
     private void executeProgressDialog() {
@@ -141,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 true);
         progressDialog.setIndeterminate(true);
 
-        gitHubAPI.getRepositories(currentPage);
+        gitHubAPI.getRepositories(currentLanguage, currentPage);
     }
 
     @Override
@@ -153,21 +207,6 @@ public class MainActivity extends AppCompatActivity {
         this.menu = menu;
 
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-
-            case R.id.main_menu_refresh: {
-
-                if (progressDialog != null)
-                    executeProgressDialog();
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

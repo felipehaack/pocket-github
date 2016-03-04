@@ -15,6 +15,7 @@ public abstract class ActivityListener implements ActivityInterface {
 
     private Resources resources;
     private RecyclerView recyclerView;
+    private RecyclerView recyclerViewLanguages;
     private ImageView imageViewLoader;
     private TextView textViewInformation;
 
@@ -38,9 +39,10 @@ public abstract class ActivityListener implements ActivityInterface {
         }
     };
 
-    public ActivityListener(RecyclerView recyclerView, ImageView imageViewLoader, TextView textViewInformation) {
+    public ActivityListener(RecyclerView recyclerView, RecyclerView recyclerViewLanguages, ImageView imageViewLoader, TextView textViewInformation) {
 
         this.recyclerView = recyclerView;
+        this.recyclerViewLanguages = recyclerViewLanguages;
         this.imageViewLoader = imageViewLoader;
         this.textViewInformation = textViewInformation;
         this.resources = recyclerView.getResources();

@@ -2,9 +2,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/main_menu_refresh"
-        android:title="@string/main_menu_item_1"
-        android:icon="@android:drawable/stat_notify_sync_noanim"
-        app:showAsAction="always" />
 </menu>

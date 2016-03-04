@@ -12,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.util.List;
+
 import sp.br.concretesolution.models.Repository;
 import sp.br.concretesolution.models.RepositoryItem;
 import sp.br.concretesolution.R;
@@ -91,5 +93,16 @@ public class RecyclerRepositoryAdapter extends RecyclerView.Adapter<RecyclerRepo
     public void setRepository(Repository repository) {
 
         this.repository = repository;
+    }
+
+    public void clearRepository(){
+
+        List<RepositoryItem> repositoryItems = this.repository.getRepositoryItems();
+        repositoryItems.clear();
+
+        this.countItems = 0;
+        this.repository.setRepositoryItems(repositoryItems);
+
+        notifyDataSetChanged();
     }
 }

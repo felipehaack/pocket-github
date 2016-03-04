@@ -29,17 +29,17 @@
                 android:id="@+id/repository_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nome do Repositório"
                 android:textSize="18sp"
                 android:textColor="#3977b0"
                 android:textStyle="bold"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"/>
 
             <TextView
                 android:id="@+id/repository_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Descricao do repositorio Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor."
                 android:textSize="14sp"
                 android:textColor="#111"
                 android:maxLines="3"
@@ -68,6 +68,7 @@
                     android:text="480"
                     android:paddingRight="17dp"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:ellipsize="end"/>
 
                 <ImageView
@@ -86,6 +87,7 @@
                     android:textSize="18sp"
                     android:text="20"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:ellipsize="end"/>
             </LinearLayout>
         </LinearLayout>
@@ -108,23 +110,25 @@
                 android:id="@+id/repository_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="username"
                 android:textSize="15sp"
                 android:textColor="#3977b0"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"/>
 
             <TextView
                 android:id="@+id/repository_fullname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nome Sobrenome"
                 android:textSize="13sp"
                 android:textColor="#b3adb1"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"/>
         </LinearLayout>
     </LinearLayout>
 

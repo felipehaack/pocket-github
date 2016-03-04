@@ -7,8 +7,10 @@ import sp.br.concretesolution.models.Repository;
 
 public interface GitHubRepositoryInterface {
 
-    @GET("/search/repositories?q=language:Java&sort=stars")
+    @GET("/search/repositories?")
     Call<Repository> repositories(
-            @Query("page") int page
+            @Query("q") String language,
+            @Query("page") int page,
+            @Query("sort") String sort
     );
 }
