@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Github Pocket</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="main_activity_repository_choose_same">This repository option is already in using</string>
+
+    <string name="main_see_more_text_default">Search more?</string>
+    <string name="main_see_more_text_start">Searching&#8230;</string>
+    <string name="main_see_more_text_end">Found!</string>
+    <string name="main_see_more_text_fail">Nothing was found!</string>
+    <string name="main_see_more_spinner_description">Spinner for load more data.</string>
+
+    <string name="main_menu_item_1">Sort</string>
+    <string name="pullrequest_menu_item_1">Refresh</string>
+
+    <string name="progress_dialog_title">Wait a moment&#8230;</string>
+    <string name="progress_dialog_subtitle_subtitle">Search for information&#8230;</string>
+    <string name="toast_title">The device is not connected to the Internet!</string>
+
+    <string name="alert_dialog_title">Sort repository by:</string>
+    <string name="alert_dialog_same_choose">This sort option is already in using</string>
+
+    <string-array name="sort_array">
+        <item>Stars</item>
+        <item>Forks</item>
+    </string-array>
+
+    <string-array name="languages_array">
+        <item>C</item>
+        <item>C#</item>
+        <item>C++</item>
+        <item>Clojure</item>
+        <item>ActionScript</item>
+        <item>C</item>
+        <item>C#</item>
+        <item>C++</item>
+        <item>Clojure</item>
+        <item>CoffeeScript</item>
+        <item>CSS</item>
+        <item>Go</item>
+        <item>Haskell</item>
+        <item>HTML</item>
+        <item>Java</item>
+        <item>JavaScript</item>
+        <item>Lua</item>
+        <item>Matlab</item>
+        <item>Objective-C</item>
+        <item>Perl</item>
+        <item>PHP</item>
+        <item>Python</item>
+        <item>R</item>
+        <item>Ruby</item>
+        <item>Scala</item>
+        <item>Shell</item>
+        <item>Swift</item>
+        <item>TeX</item>
+        <item>VimL</item>
+    </string-array>
+</resources>
