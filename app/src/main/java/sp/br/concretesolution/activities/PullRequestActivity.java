@@ -24,7 +24,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import sp.br.concretesolution.apis.GitHubAPI;
+import sp.br.concretesolution.apis.GithubAPI;
 import sp.br.concretesolution.adapters.RecyclerPullRequestAdapter;
 import sp.br.concretesolution.listeners.RecyclerClickListener;
 import sp.br.concretesolution.models.PullRequest;
@@ -37,7 +37,7 @@ public class PullRequestActivity extends AppCompatActivity {
     private String repositoryName;
     private String repositoryOwner;
 
-    private GitHubAPI gitHubAPI;
+    private GithubAPI githubAPI;
     private RecyclerPullRequestAdapter recyclerViewAdapter;
 
     private ProgressDialog progressDialog;
@@ -77,7 +77,7 @@ public class PullRequestActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerViewAdapter);
 
         /* Instanced GitHub API */
-        gitHubAPI = new GitHubAPI() {
+        githubAPI = new GithubAPI() {
             @Override
             public void pullRequestAPIResult(List<PullRequest> result, String message) {
 
@@ -90,16 +90,13 @@ public class PullRequestActivity extends AppCompatActivity {
                         menu.getItem(0).setVisible(false);
                     }
 
-                    int countOpened = 0, countClosed = 0;
+                    int countOpened = 0;
 
                     for (int i = 0; i < result.size(); ++i)
                         if (result.get(i).getStatus().contains("open"))
                             countOpened++;
-                        else
-                            countClosed++;
 
                     ((TextView) findViewById(R.id.pull_request_opened)).setText(String.valueOf(countOpened));
-                    ((TextView) findViewById(R.id.pull_request_closed)).setText(String.valueOf(countClosed));
 
                     recyclerViewAdapter.setPullRequestList(result);
                     recyclerViewAdapter.notifyDataSetChanged();
@@ -117,7 +114,7 @@ public class PullRequestActivity extends AppCompatActivity {
 
             }
         };
-        gitHubAPI.startAPI();
+        githubAPI.startAPI();
 
         /* Add ScrollListener and TouchItem */
         recyclerView.addOnItemTouchListener(new RecyclerClickListener(this, new RecyclerClickListener.OnItemClickListener() {
@@ -142,7 +139,7 @@ public class PullRequestActivity extends AppCompatActivity {
                 true);
         progressDialog.setIndeterminate(true);
 
-        gitHubAPI.getPullRequests(repositoryOwner, repositoryName);
+        githubAPI.getPullRequests(repositoryOwner, repositoryName);
     }
 
     private void animateChangeActionBarTitleColor(int colorStart, int colorEnd, int delay, int duration){

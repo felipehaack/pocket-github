@@ -16,14 +16,14 @@ import sp.br.concretesolution.interfaces.RepositoryInterface;
 import sp.br.concretesolution.models.PullRequest;
 import sp.br.concretesolution.models.Repository;
 
-public abstract class GitHubAPI implements RepositoryInterface, PullRequestInterface {
+public abstract class GithubAPI implements RepositoryInterface, PullRequestInterface {
 
     final String BASE_URL = "https://api.github.com";
 
     private Retrofit retrofit;
     private OkHttpClient okHttpClient = new OkHttpClient();
 
-    public GitHubAPI() {
+    public GithubAPI() {
 
     }
 

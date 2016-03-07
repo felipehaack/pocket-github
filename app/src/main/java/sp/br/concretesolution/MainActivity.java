@@ -25,7 +25,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import sp.br.concretesolution.adapters.RecyclerLanguageAdapter;
-import sp.br.concretesolution.apis.GitHubAPI;
+import sp.br.concretesolution.apis.GithubAPI;
 import sp.br.concretesolution.activities.PullRequestActivity;
 import sp.br.concretesolution.adapters.RecyclerRepositoryAdapter;
 import sp.br.concretesolution.listeners.ActivityListener;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public String[] languages;
 
     private Menu menu;
-    private GitHubAPI gitHubAPI;
+    private GithubAPI githubAPI;
     private ActivityListener activityListener;
     private RecyclerRepositoryAdapter recyclerRepositoryAdapter;
     private RecyclerLanguageAdapter recyclerLanguageAdapter;
@@ -89,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void infiniteScrollDetected() {
 
-                gitHubAPI.getRepositories(currentLanguage, currentPage, currentSort);
+                githubAPI.getRepositories(currentLanguage, currentPage, currentSort);
             }
         };
 
-        gitHubAPI = new GitHubAPI() {
+        githubAPI = new GithubAPI() {
 
             @Override
             public void pullRequestAPIResult(List<PullRequest> pullRequests, String message) {
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        gitHubAPI.startAPI();
+        githubAPI.startAPI();
 
         /* Add ScrollListener and TouchItem to recycleViewRepository */
         recyclerViewRepository.addOnScrollListener(new RecyclerScrollListener(activityListener));
@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
         currentPage = 1;
 
-        gitHubAPI.getRepositories(currentLanguage, currentPage, currentSort);
+        githubAPI.getRepositories(currentLanguage, currentPage, currentSort);
     }
 
     public void executeAlertDialogSortItems(){
