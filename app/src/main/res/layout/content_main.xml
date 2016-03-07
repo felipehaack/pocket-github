@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:background="#FFF"
+        android:background="#46464C"
         android:elevation="0dp"/>
 
     <include layout="@layout/content_see_more" />
@@ -26,6 +26,5 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:background="#FFF"
-        android:elevation="12dp"
-        android:translationX="100dp"/>
+        android:elevation="12dp"/>
 </RelativeLayout>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#575757">
+    android:color="#707070">
 
     <item>
 
-        <color android:color="#FFF" />
+        <color android:color="#46464C" />
     </item>
 
     <item android:id="@android:id/mask">

@@ -2,6 +2,7 @@ package sp.br.concretesolution;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewLanguages.setAdapter(recyclerLanguageAdapter);
 
         /* Create a listener for activity to detect swipe down and search for more github repositories */
-        activityListener = new ActivityListener(recyclerViewRepository, recyclerViewLanguages, (ImageView) findViewById(R.id.see_more_spinner), (TextView) findViewById(R.id.see_more_text)) {
+        activityListener = new ActivityListener(this, recyclerViewRepository, (ImageView) findViewById(R.id.see_more_spinner), (TextView) findViewById(R.id.see_more_text)) {
 
             @Override
             public void infiniteScrollDetected() {
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(MainActivity.this, getResources().getString(R.string.toast_title), Toast.LENGTH_LONG).show();
 
-                    activityListener.clearSpinnerAnimationWithFail();
+                    activityListener.clearSpinnerWithFail();
                 }
             }
         };
@@ -134,29 +135,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(final View view, final int position) {
 
-                recyclerViewRepository.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                if (!activityListener.enableTranslateX) {
 
-                        List<RepositoryItem> repositoryItems = recyclerRepositoryAdapter.getRepository().getRepositoryItems();
+                    recyclerViewRepository.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
-                        Intent intent = new Intent(MainActivity.this, PullRequestActivity.class);
+                            List<RepositoryItem> repositoryItems = recyclerRepositoryAdapter.getRepository().getRepositoryItems();
 
-                        intent.putExtra("repositoryName", repositoryItems.get(position).getName());
-                        intent.putExtra("repositoryOwner", repositoryItems.get(position).getOwner().getLogin());
+                            Intent intent = new Intent(MainActivity.this, PullRequestActivity.class);
 
-                        View viewTitle = view.findViewById(R.id.repository_name);
+                            intent.putExtra("repositoryName", repositoryItems.get(position).getName());
+                            intent.putExtra("repositoryOwner", repositoryItems.get(position).getOwner().getLogin());
 
-                        if (Build.VERSION.SDK_INT >= 21) {
+                            View viewTitle = view.findViewById(R.id.repository_name);
 
-                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, viewTitle, "moveTitle");
-                            startActivity(intent, options.toBundle());
-                        } else {
+                            if (Build.VERSION.SDK_INT >= 21) {
 
-                            startActivity(intent);
+                                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, viewTitle, "moveTitle");
+                                startActivity(intent, options.toBundle());
+                            } else {
+
+                                startActivity(intent);
+                            }
                         }
-                    }
-                }, 150);
+                    }, 150);
+                }
             }
         }));
 
@@ -165,24 +169,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, final int position) {
 
-                recyclerViewLanguages.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                if(!activityListener.enableTranslateX) {
 
-                        if (!languages[position].equals(currentLanguage)) {
+                    recyclerViewLanguages.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
-                            recyclerRepositoryAdapter.clearRepository();
+                            if (!languages[position].equals(currentLanguage)) {
 
-                            currentLanguage = languages[position];
+                                recyclerRepositoryAdapter.clearRepository();
 
-                            executeProgressDialog();
-                        } else {
+                                currentLanguage = languages[position];
 
-                            if (recyclerRepositoryAdapter.getRepository().getRepositoryItems().size() == 0)
+                                activityListener.executeEndAnimationX(0f);
                                 executeProgressDialog();
+                            } else {
+
+                                if (recyclerRepositoryAdapter.getRepository().getRepositoryItems().size() == 0) {
+
+                                    activityListener.executeEndAnimationX(0f);
+                                    executeProgressDialog();
+                                }
+                            }
                         }
-                    }
-                }, 150);
+                    }, 150);
+                }
             }
         }));
     }
@@ -210,8 +221,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+
+        if(activityListener.translateAcumX == 0f){
+
+            activityListener.executeEndAnimationX(activityListener.translateMaxX);
+        }else{
+
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        super.onConfigurationChanged(newConfig);
+
+        activityListener.onConfigurationChanged();
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
-        return activityListener.detectInfiniteScroll(ev) || super.dispatchTouchEvent(ev);
+        return activityListener.motionEvent(ev) || super.dispatchTouchEvent(ev);
     }
 }
