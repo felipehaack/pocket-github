@@ -38,11 +38,11 @@ public abstract class GitHubAPI implements RepositoryInterface, PullRequestInter
                 build();
     }
 
-    public void getRepositories(final String language, final int currentPage) {
+    public void getRepositories(final String currentLanguage, final int currentPage, final String currentSort) {
 
         GitHubRepositoryInterface gitHubInterface = retrofit.create(GitHubRepositoryInterface.class);
 
-        Call<Repository> response = gitHubInterface.repositories("language:" + language, currentPage, "stars");
+        Call<Repository> response = gitHubInterface.repositories("language:" + currentLanguage, currentPage, currentSort);
 
         response.enqueue(new Callback<Repository>() {
             @Override

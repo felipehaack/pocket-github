@@ -1,6 +1,8 @@
 package sp.br.concretesolution;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -10,8 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     public int currentPage = 1;
 
     public String currentLanguage = "";
-    public String currentSort = "";
+    public String currentSort = "stars";
+    private int currentSortPosition = 0;
     public String[] languages;
 
     private Menu menu;
@@ -84,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void infiniteScrollDetected() {
 
-                gitHubAPI.getRepositories(currentLanguage, currentPage);
+                gitHubAPI.getRepositories(currentLanguage, currentPage, currentSort);
             }
         };
 
@@ -113,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
                     recyclerRepositoryAdapter.notifyDataSetChanged();
 
                     activityListener.clearSpinnerAnimation();
+
+                    menu.findItem(R.id.main_activity_sort_repository).setVisible(true);
 
                     currentPage++;
                 } else {
@@ -180,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
                                 recyclerRepositoryAdapter.clearRepository();
 
                                 currentLanguage = languages[position];
+                                currentSort = "stars";
+                                currentSortPosition = 0;
 
                                 activityListener.executeEndAnimationX(0f);
                                 executeProgressDialog();
@@ -187,8 +196,14 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (recyclerRepositoryAdapter.getRepository().getRepositoryItems().size() == 0) {
 
+                                    currentSort = "stars";
+                                    currentSortPosition = 0;
+
                                     activityListener.executeEndAnimationX(0f);
                                     executeProgressDialog();
+                                }else{
+
+                                    Toast.makeText(MainActivity.this, R.string.main_activity_repository_choose_same, Toast.LENGTH_LONG).show();
                                 }
                             }
                         }
@@ -204,9 +219,59 @@ public class MainActivity extends AppCompatActivity {
                 getResources().getString(R.string.progress_dialog_title),
                 getResources().getString(R.string.progress_dialog_subtitle_subtitle),
                 true);
+
         progressDialog.setIndeterminate(true);
 
-        gitHubAPI.getRepositories(currentLanguage, currentPage);
+        currentPage = 1;
+
+        gitHubAPI.getRepositories(currentLanguage, currentPage, currentSort);
+    }
+
+    public void executeAlertDialogSortItems(){
+
+        Log.e("Test", currentLanguage + " " + currentPage + " " + currentSort);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.alert_dialog_title)
+                .setItems(R.array.sort_array, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if(currentSortPosition != which) {
+
+                            currentSortPosition = which;
+
+                            if (activityListener.translateAcumX >= activityListener.translateMaxX)
+                                activityListener.executeEndAnimationX(0f);
+
+                            switch (which) {
+
+                                case 0: {
+
+                                    currentSort = "stars";
+
+                                    break;
+                                }
+
+                                case 1: {
+
+                                    currentSort = "forks";
+
+                                    break;
+                                }
+                            }
+
+                            recyclerRepositoryAdapter.clearRepository();
+
+                            executeProgressDialog();
+                        }else{
+
+                            Toast.makeText(MainActivity.this, R.string.alert_dialog_same_choose, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+        builder.create().show();
     }
 
     @Override
@@ -218,6 +283,22 @@ public class MainActivity extends AppCompatActivity {
         this.menu = menu;
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.main_activity_sort_repository: {
+
+                executeAlertDialogSortItems();
+
+                break;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

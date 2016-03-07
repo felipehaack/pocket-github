@@ -31,7 +31,7 @@ public abstract class ActivityListener implements ActivityInterface {
     private Boolean contentSeeMoreVisibility = false;
 
     float limitX = 17f;
-    float limitY = 6f;
+    float limitY = 7f;
 
     private float startX;
     private float startY;
