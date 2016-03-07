@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sp.br.concretesolution">
+    package="sp.br.githubpocket">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="sp.br.githubpocket.MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".activities.PullRequestActivity"
+            android:name="sp.br.githubpocket.activities.PullRequestActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
