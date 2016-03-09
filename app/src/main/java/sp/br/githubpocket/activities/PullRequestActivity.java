@@ -105,7 +105,7 @@ public class PullRequestActivity extends AppCompatActivity {
                     if (progressDialog != null)
                         progressDialog.dismiss();
 
-                    Toast.makeText(PullRequestActivity.this, getResources().getString(R.string.toast_title), Toast.LENGTH_LONG).show();
+                    Toast.makeText(PullRequestActivity.this, getResources().getString(R.string.main_pullrequest_activity_toast_title), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -134,8 +134,8 @@ public class PullRequestActivity extends AppCompatActivity {
     private void executeProgressDialog() {
 
         progressDialog = ProgressDialog.show(this,
-                getResources().getString(R.string.progress_dialog_title),
-                getResources().getString(R.string.progress_dialog_subtitle_subtitle),
+                getResources().getString(R.string.main_activity_progress_dialog_title),
+                getResources().getString(R.string.main_activity_progress_dialog_subtitle),
                 true);
         progressDialog.setIndeterminate(true);
 

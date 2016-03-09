@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Github Pocket</string>
+
+    <!-- Main Activity - Layout See More -->
+    <string name="main_see_more_text_default">Search more?</string>
+    <string name="main_see_more_text_start">Searching&#8230;</string>
+    <string name="main_see_more_text_end">Found!</string>
+    <string name="main_see_more_text_fail">Nothing was found!</string>
+    <string name="main_see_more_spinner_description">Spinner for load more data.</string>
+
+    <!-- Menu Items -->
+    <string name="main_menu_item_1">Sort</string>
+    <string name="main_menu_item_2">About</string>
+    <string name="pullrequest_menu_item_1">Refresh</string>
+
+    <!-- Main Activity - Talk about what is happen -->
+    <string name="main_activity_progress_dialog_title">Wait a moment&#8230;</string>
+    <string name="main_activity_progress_dialog_subtitle">Search for information&#8230;</string>
+    <string name="main_pullrequest_activity_toast_title">The device is not connected to the Internet!</string>
+    <string name="main_activity_repository_choose_same">This repository option is already in using</string>
+
+    <!-- Main Activity - Alert Dialog With Option -->
+    <string name="main_activity_alert_dialog_title">Sort repository by:</string>
+    <string name="main_activity_alert_dialog_same_choose">This sort option is already in using</string>
+
+    <!-- About Activity -->
+    <string name="about_activity_title">About the APP</string>
+    <string name="about_activity_title_paragraph_1">Resume</string>
+    <string name="about_activity_text_1">This application\'s goal is to list all the repositories for each programming language from the Github API. Moreover, it is possible to view information about a specific repository, such as, a description, the repository\'s owner, a the number of stars and forks and all the pull requests currently active.</string>
+    <string name="about_activity_title_paragraph_2">Contributors</string>
+    <string name="about_activity_text_2">Isabella Czamanski, Front-End Developer, created the APP icon, and helped me with building the application interface. You can find more information about her at http://isabellaczamanski.com/</string>
+    <string name="about_activity_text_3">Jessica Costa, IT Student, helped me build the application interface.</string>
+    <string name="about_activity_text_4">Ryan O\' Mullan, Front and Back End Developer, helped with translating and building the application interface. You can find more about him at http://ryan.omullan.com/</string>
+
+    <!-- Sort and Languages Array -->
+    <string-array name="sort_array">
+        <item>Stars</item>
+        <item>Forks</item>
+    </string-array>
+
+    <string-array name="languages_array">
+        <item>C</item>
+        <item>C#</item>
+        <item>C++</item>
+        <item>Clojure</item>
+        <item>ActionScript</item>
+        <item>C</item>
+        <item>C#</item>
+        <item>C++</item>
+        <item>Clojure</item>
+        <item>CoffeeScript</item>
+        <item>CSS</item>
+        <item>Go</item>
+        <item>Haskell</item>
+        <item>HTML</item>
+        <item>Java</item>
+        <item>JavaScript</item>
+        <item>Lua</item>
+        <item>Matlab</item>
+        <item>Objective-C</item>
+        <item>Perl</item>
+        <item>PHP</item>
+        <item>Python</item>
+        <item>R</item>
+        <item>Ruby</item>
+        <item>Scala</item>
+        <item>Shell</item>
+        <item>Swift</item>
+        <item>TeX</item>
+        <item>VimL</item>
+    </string-array>
+</resources>

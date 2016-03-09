@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import sp.br.githubpocket.R;
+import sp.br.githubpocket.activities.AboutActivity;
 import sp.br.githubpocket.adapters.RecyclerLanguageAdapter;
 import sp.br.githubpocket.apis.GithubAPI;
 import sp.br.githubpocket.activities.PullRequestActivity;
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     if (progressDialog != null)
                         progressDialog.dismiss();
 
-                    Toast.makeText(MainActivity.this, getResources().getString(R.string.toast_title), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.main_pullrequest_activity_toast_title), Toast.LENGTH_LONG).show();
 
                     activityListener.clearSpinnerWithFail();
                 }
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, final int position) {
 
-                if(!activityListener.enableTranslateX) {
+                if (!activityListener.enableTranslateX) {
 
                     recyclerViewLanguages.postDelayed(new Runnable() {
                         @Override
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     activityListener.executeEndAnimationX(0f);
                                     executeProgressDialog();
-                                }else{
+                                } else {
 
                                     Toast.makeText(MainActivity.this, R.string.main_activity_repository_choose_same, Toast.LENGTH_LONG).show();
                                 }
@@ -217,8 +217,8 @@ public class MainActivity extends AppCompatActivity {
     private void executeProgressDialog() {
 
         progressDialog = ProgressDialog.show(this,
-                getResources().getString(R.string.progress_dialog_title),
-                getResources().getString(R.string.progress_dialog_subtitle_subtitle),
+                getResources().getString(R.string.main_activity_progress_dialog_title),
+                getResources().getString(R.string.main_activity_progress_dialog_subtitle),
                 true);
 
         progressDialog.setIndeterminate(true);
@@ -228,17 +228,17 @@ public class MainActivity extends AppCompatActivity {
         githubAPI.getRepositories(currentLanguage, currentPage, currentSort);
     }
 
-    public void executeAlertDialogSortItems(){
+    public void executeAlertDialogSortItems() {
 
         Log.e("Test", currentLanguage + " " + currentPage + " " + currentSort);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.alert_dialog_title)
+        builder.setTitle(R.string.main_activity_alert_dialog_title)
                 .setItems(R.array.sort_array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        if(currentSortPosition != which) {
+                        if (currentSortPosition != which) {
 
                             currentSortPosition = which;
 
@@ -265,9 +265,9 @@ public class MainActivity extends AppCompatActivity {
                             recyclerRepositoryAdapter.clearRepository();
 
                             executeProgressDialog();
-                        }else{
+                        } else {
 
-                            Toast.makeText(MainActivity.this, R.string.alert_dialog_same_choose, Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, R.string.main_activity_alert_dialog_same_choose, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -289,13 +289,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.main_activity_sort_repository: {
 
                 executeAlertDialogSortItems();
 
                 break;
+            }
+
+            case R.id.main_activity_about: {
+
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
             }
         }
 
@@ -305,10 +311,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if(activityListener.translateAcumX == 0f){
+        if (activityListener.translateAcumX == 0f) {
 
             activityListener.executeEndAnimationX(activityListener.translateMaxX);
-        }else{
+        } else {
 
             super.onBackPressed();
         }
