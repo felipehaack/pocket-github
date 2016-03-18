@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Github Pocket</string>
+    <string name="app_name">Pocket GitHub</string>
 
     <!-- Main Activity - Layout See More -->
     <string name="main_see_more_text_default">Buscar mais?</string>
